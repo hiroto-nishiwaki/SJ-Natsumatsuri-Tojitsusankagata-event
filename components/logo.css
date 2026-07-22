@@ -1,0 +1,189 @@
+/* 「ふわふわストライク」立体ロゴ
+   VS嵐／ボンバーストライカー風：黄緑の立体カタカナ＋紫の縁取り＋爆発バースト */
+
+/* ===== 星のライムグリーン背景 ===== */
+.logo-stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background-color: var(--c-lime);
+  background-image:
+    radial-gradient(circle at 50% 38%, oklch(92% 0.12 128 / 0.6), transparent 60%);
+  overflow: hidden;
+}
+
+/* 背景の星：左斜め下へ流れ続ける（タイル1枚=80pxぶんをループ） */
+.logo-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath d='M40 14l5.3 16.4H62l-13.4 9.7 5.1 16.4L40 46.8 26.3 56.5l5.1-16.4L18 30.4h16.7z' fill='%23ffffff' fill-opacity='0.72'/%3E%3C/svg%3E");
+  background-size: 80px 80px;
+  animation: star-drift 3.2s linear infinite;
+}
+
+/* x を負・y を正に動かす＝模様が左下へ流れて見える。80pxで継ぎ目なくループ */
+@keyframes star-drift {
+  from { background-position: 0 0; }
+  to   { background-position: -80px 80px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-stage::before { animation: none !important; }
+}
+
+/* ===== 透過PNGロゴ画像 ===== */
+.logo-image {
+  position: relative;
+  z-index: 3;
+  width: min(99%, 135cqh);
+  height: auto;
+  max-height: 99%;
+  object-fit: contain;
+  filter: drop-shadow(0 0.8rem 1.1rem oklch(28% 0.1 300 / 0.45));
+  /* 登場でポップ → そのまま ゆらゆら と呼吸し続ける */
+  animation:
+    logo-pop 0.7s var(--ease-back) backwards,
+    logo-float 3.4s ease-in-out 0.8s infinite;
+}
+
+@keyframes logo-pop {
+  from { opacity: 0; transform: scale(0.7) rotate(-6deg); }
+}
+
+@keyframes logo-float {
+  0%, 100% { transform: scale(1)    rotate(0deg); }
+  50%      { transform: scale(1.045) rotate(-1.2deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-image { animation: none !important; }
+}
+
+/* ===== 爆発バースト（ロゴの後ろ） =====
+   左右対称の12方向スター。正方形（aspect-ratio:1）にしてトゲが歪まないようにし、
+   ステージ内に完全に収めて、トゲが端で途切れないようにする */
+.burst {
+  position: absolute;
+  aspect-ratio: 1;
+  z-index: 1;
+  clip-path: polygon(
+    50.0% 0.0%, 57.8% 21.0%, 75.0% 6.7%, 71.2% 28.8%, 93.3% 25.0%, 79.0% 42.2%,
+    100.0% 50.0%, 79.0% 57.8%, 93.3% 75.0%, 71.2% 71.2%, 75.0% 93.3%, 57.8% 79.0%,
+    50.0% 100.0%, 42.2% 79.0%, 25.0% 93.3%, 28.8% 71.2%, 6.7% 75.0%, 21.0% 57.8%,
+    0.0% 50.0%, 21.0% 42.2%, 6.7% 25.0%, 28.8% 28.8%, 25.0% 6.7%, 42.2% 21.0%
+  );
+  background: radial-gradient(circle, var(--c-burst-3), var(--c-burst-1) 55%, var(--c-burst-2));
+}
+.burst.b1 {
+  width: 30%;
+  top: 3%; left: 2%;
+  animation: throb 2.6s ease-in-out infinite;
+}
+.burst.b2 {
+  width: 27%;
+  top: 5%; right: 3%;
+  animation: throb 2.6s ease-in-out infinite 0.7s;
+}
+.burst.b3 {
+  width: 23%;
+  bottom: 4%; left: 12%;
+  animation: throb 2.6s ease-in-out infinite 1.3s;
+}
+.burst.b4 {
+  width: 20%;
+  bottom: 6%; right: 14%;
+  animation: throb 2.6s ease-in-out infinite 1.9s;
+}
+
+@keyframes throb {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.85; }
+  50%      { transform: scale(1.12) rotate(8deg); opacity: 1; }
+}
+
+/* ===== ロゴ本体 ===== */
+.logo {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  line-height: 0.92;
+  text-align: center;
+  filter: drop-shadow(0 0.8rem 1rem oklch(28% 0.1 300 / 0.5));
+}
+
+/* 立体面：はっきり読める明るい黄色のベタ塗り
+   （background-clip:text のグラデは一部ブラウザで描画されないため実色で塗る） */
+.logo .word {
+  position: relative;
+  font-size: var(--text-hero);
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  color: var(--c-logo-top);
+  -webkit-text-fill-color: var(--c-logo-top);
+  /* 上左に白いツヤ＋下にわずかな黄緑陰でぷっくり感 */
+  text-shadow:
+    -0.012em -0.012em 0 oklch(100% 0 0 / 0.75),
+     0.01em   0.014em 0 var(--c-logo-bottom);
+}
+
+/* 後ろの層：濃い紫の太い縁取り＋斜め下への押し出し（3D厚み）
+   緑にもオレンジの爆発にも負けないよう、濃い一色の縁取りで視認性を確保 */
+.logo .word::before {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  color: var(--c-logo-edge-deep);
+  -webkit-text-fill-color: var(--c-logo-edge-deep);
+  -webkit-text-stroke: 0.2em var(--c-logo-edge-deep);
+  paint-order: stroke fill;
+  text-shadow:
+    0.018em 0.018em 0 var(--c-logo-edge-deep),
+    0.036em 0.036em 0 var(--c-logo-edge-deep),
+    0.054em 0.054em 0 var(--c-logo-edge-deep),
+    0.072em 0.072em 0 var(--c-logo-edge-deep),
+    0.09em  0.1em   0.06em oklch(22% 0.1 300 / 0.5);
+}
+
+/* 2段の傾き（躍動感） */
+.logo .word.line1 { transform: rotate(-4deg) translateX(-0.18em); }
+.logo .word.line2 { transform: rotate(-2.5deg) translateX(0.2em); margin-top: -0.06em; }
+
+/* 英語サブ文字 */
+.logo .subtitle {
+  z-index: 3;
+  margin-top: 0.35em;
+  font-size: 3cqw;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  color: var(--c-card);
+  -webkit-text-stroke: 0.06em var(--c-logo-edge);
+  paint-order: stroke fill;
+  text-shadow: 0 0.18em 0.3em oklch(30% 0.1 300 / 0.5);
+  transform: rotate(-2deg);
+}
+
+/* 登場アニメ */
+.logo-stage .word,
+.logo-stage .subtitle {
+  animation: pop-in 0.7s var(--ease-back) backwards;
+}
+.logo-stage .word.line1 { animation-delay: 0.1s; }
+.logo-stage .word.line2 { animation-delay: 0.28s; }
+.logo-stage .subtitle { animation-delay: 0.5s; }
+
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(0.6) rotate(-12deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .burst,
+  .logo-stage .word,
+  .logo-stage .subtitle { animation: none !important; }
+}

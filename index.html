@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ふわふわストライク 2026 — ルール説明</title>
+  <link rel="stylesheet" href="styles/tokens.css" />
+  <link rel="stylesheet" href="styles/deck.css" />
+  <link rel="stylesheet" href="components/logo.css" />
+  <link rel="stylesheet" href="styles/slides.css" />
+</head>
+<body>
+  <!-- 再利用するイラスト（SVGシンボル） -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <!-- 100均の青いふわふわボール -->
+      <symbol id="ball" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="47" fill="var(--c-ball)" />
+        <path d="M5 50a45 45 0 0 0 90 0z" fill="var(--c-ball-shadow)" opacity="0.45" />
+        <ellipse cx="38" cy="33" rx="22" ry="14" fill="var(--c-ball-hi)" opacity="0.85" />
+        <line x1="6" y1="50" x2="94" y2="50" stroke="var(--c-ball-hi)" stroke-width="2" opacity="0.5" />
+        <circle cx="50" cy="50" r="47" fill="none" stroke="oklch(40% 0.16 255)" stroke-width="2" opacity="0.4" />
+      </symbol>
+
+      <!-- 通常の的：ダンボールで作った円柱の缶（茶色／縦は元のまま・横だけ少し太く） -->
+      <symbol id="can" viewBox="0 0 76 100">
+        <!-- 側面の本体 -->
+        <path d="M9 18 L9 90 Q9 97 38 97 Q67 97 67 90 L67 18 Z"
+          fill="var(--c-can)" stroke="var(--c-can-line)" stroke-width="2" />
+        <!-- 側面の陰（右side） -->
+        <path d="M52 19 L52 90 Q52 95 67 90 L67 18 Z" fill="var(--c-can-shadow)" opacity="0.4" />
+        <!-- フタ面 -->
+        <ellipse cx="38" cy="18" rx="29" ry="8" fill="var(--c-can-top)" stroke="var(--c-can-line)" stroke-width="2" />
+        <ellipse cx="38" cy="18" rx="18" ry="4.2" fill="none" stroke="var(--c-can-line)" stroke-width="1.4" opacity="0.5" />
+      </symbol>
+
+      <!-- 赤い的：得点になる円柱の缶（赤／縦は元のまま・横だけ少し太く） -->
+      <symbol id="canRed" viewBox="0 0 76 100">
+        <path d="M9 18 L9 90 Q9 97 38 97 Q67 97 67 90 L67 18 Z"
+          fill="var(--c-can-red)" stroke="var(--c-can-red-line)" stroke-width="2" />
+        <path d="M52 19 L52 90 Q52 95 67 90 L67 18 Z" fill="var(--c-can-red-line)" opacity="0.32" />
+        <ellipse cx="38" cy="18" rx="29" ry="8" fill="var(--c-can-red-top)" stroke="var(--c-can-red-line)" stroke-width="2" />
+        <ellipse cx="38" cy="18" rx="18" ry="4.2" fill="none" stroke="var(--c-can-red-line)" stroke-width="1.4" opacity="0.45" />
+      </symbol>
+
+      <!-- トロフィー -->
+      <symbol id="trophy" viewBox="0 0 100 110">
+        <path d="M30 10h40v22a20 20 0 0 1-40 0z" fill="var(--c-burst-3)" stroke="oklch(70% 0.16 80)" stroke-width="2" />
+        <path d="M30 14H16a14 14 0 0 0 18 18" fill="none" stroke="oklch(72% 0.16 85)" stroke-width="5" />
+        <path d="M70 14h14a14 14 0 0 1-18 18" fill="none" stroke="oklch(72% 0.16 85)" stroke-width="5" />
+        <rect x="44" y="52" width="12" height="16" fill="oklch(78% 0.14 85)" />
+        <rect x="30" y="68" width="40" height="10" rx="3" fill="oklch(70% 0.15 80)" />
+        <rect x="34" y="80" width="32" height="20" rx="3" fill="oklch(48% 0.08 60)" />
+        <path d="M50 16 L53.1 24.8 L62.4 25 L55 30.6 L57.6 39.5 L50 34.2 L42.4 39.5 L45 30.6 L37.6 25 L46.9 24.8 Z" fill="oklch(98% 0.05 95)" />
+      </symbol>
+    </defs>
+  </svg>
+
+  <main class="deck" aria-label="ふわふわストライク ルール説明スライド">
+    <div class="stage">
+
+      <!-- 1. タイトル -->
+      <section class="slide is-active" aria-label="タイトル">
+        <div class="logo-stage">
+          <img class="logo-image" src="assets/logo.png"
+               width="1536" height="1024"
+               fetchpriority="high" decoding="async"
+               alt="ふわふわストライク FUWA FUWA STRIKE" />
+        </div>
+      </section>
+
+      <!-- 2. どんなゲーム？ -->
+      <section class="slide s-game" aria-labelledby="t-game">
+        <h2 class="slide-title rise" id="t-game">どんなゲーム？</h2>
+        <p class="lead rise">
+          ふわふわボールを <ruby>投<rt>な</rt></ruby>げて、<br />
+          <ruby>的<rt>まと</rt></ruby>を <em>たおそう！</em>
+        </p>
+        <div class="game-scene rise" aria-hidden="true">
+          <svg class="scene-ball" viewBox="0 0 100 100"><use href="#ball" /></svg>
+          <span class="scene-arrow">➜</span>
+          <div class="scene-table">
+            <svg class="scene-cans" viewBox="0 0 200 150" aria-hidden="true">
+              <!-- 下段2つ→上段1つの順で描いて上の缶を前面に -->
+              <use href="#can"    x="40"  y="66" width="60" height="79" />
+              <use href="#can"    x="100" y="66" width="60" height="79" />
+              <use href="#canRed" x="70"  y="12" width="60" height="79" />
+            </svg>
+          </div>
+        </div>
+        <p class="note rise">
+          <ruby>机<rt>つくえ</rt></ruby>の <ruby>上<rt>うえ</rt></ruby>に <ruby>並<rt>なら</rt></ruby>んだ <ruby>的<rt>まと</rt></ruby>を ねらってね！
+        </p>
+      </section>
+
+      <!-- 3. チーム＆トーナメント -->
+      <section class="slide s-tourney" aria-labelledby="t-tourney">
+        <h2 class="slide-title rise" id="t-tourney">トーナメント</h2>
+        <div class="tourney-grid">
+          <ul class="tourney-format rise">
+            <li>・<ruby>予選<rt>よせん</rt></ruby> 3<ruby>回<rt>かい</rt></ruby></li>
+            <li>・<ruby>決勝<rt>けっしょう</rt></ruby> 1<ruby>回<rt>かい</rt></ruby></li>
+          </ul>
+          <div class="bracket rise" aria-hidden="true">
+            <svg class="bracket-trophy" viewBox="0 0 100 110"><use href="#trophy" /></svg>
+            <div class="final-box"><ruby>決勝<rt>けっしょう</rt></ruby></div>
+            <div class="connector to-final"></div>
+            <div class="groups">
+              <div class="group">
+                <div class="winner"><ruby>勝者<rt>しょうしゃ</rt></ruby></div>
+                <div class="connector to-teams"></div>
+                <div class="teams">
+                  <span class="team">A</span><span class="team">B</span><span class="team">C</span>
+                </div>
+              </div>
+              <div class="group">
+                <div class="winner"><ruby>勝者<rt>しょうしゃ</rt></ruby></div>
+                <div class="connector to-teams"></div>
+                <div class="teams">
+                  <span class="team">D</span><span class="team">E</span><span class="team">F</span>
+                </div>
+              </div>
+              <div class="group">
+                <div class="winner"><ruby>勝者<rt>しょうしゃ</rt></ruby></div>
+                <div class="connector to-teams"></div>
+                <div class="teams">
+                  <span class="team">G</span><span class="team">H</span><span class="team">I</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="note rise">
+          <ruby>2人<rt>ふたり</rt></ruby>1<ruby>組<rt>くみ</rt></ruby>の チームA〜I で <ruby>戦<rt>たたか</rt></ruby>うよ！
+        </p>
+      </section>
+
+      <!-- 4. 投げ方・立ち位置 -->
+      <section class="slide s-throw" aria-labelledby="t-throw">
+        <h2 class="slide-title rise" id="t-throw"><ruby>投<rt>な</rt></ruby>げ<ruby>方<rt>かた</rt></ruby>・<ruby>立<rt>た</rt></ruby>ち<ruby>位置<rt>いち</rt></ruby></h2>
+        <div class="throw-layout">
+          <ul class="throw-points rise">
+            <li><em>5m <ruby>先<rt>さき</rt></ruby></em>の <ruby>的<rt>まと</rt></ruby>を <ruby>2人<rt>ふたり</rt></ruby>で <ruby>同時<rt>どうじ</rt></ruby>に ねらう</li>
+            <li><ruby>決<rt>き</rt></ruby>められた <em>ラインに <ruby>立<rt>た</rt></ruby>って</em> <ruby>投<rt>な</rt></ruby>げる</li>
+            <li><ruby>小学生<rt>しょうがくせい</rt></ruby><ruby>以下<rt>いか</rt></ruby>は もう <ruby>少<rt>すこ</rt></ruby>し <ruby>近<rt>ちか</rt></ruby>い ラインから 投げてOK</li>
+          </ul>
+          <div class="throw-scene rise" aria-hidden="true">
+            <svg class="aim" viewBox="0 -100 220 460" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <marker id="aimHead" viewBox="0 0 12 12" refX="6" refY="6"
+                        markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                  <path d="M1,1 L11,6 L1,11 Z" fill="var(--c-aim)" />
+                </marker>
+              </defs>
+              <!-- 的（缶3つをピラミッド積み・中心x=124で上部へ／下段2つ→上段1つの順で上を前面に） -->
+              <use href="#can"    x="64"  y="-44" width="60" height="79" />
+              <use href="#can"    x="124" y="-44" width="60" height="79" />
+              <use href="#canRed" x="94"  y="-98" width="60" height="79" />
+              <!-- 5m の距離めもり（左側の点線・的の下〜ラインの間。長め） -->
+              <line x1="16" y1="44" x2="16" y2="316" stroke="var(--c-ink-soft)"
+                    stroke-width="2.4" stroke-dasharray="7 8" stroke-linecap="round" />
+              <line x1="11" y1="44" x2="21" y2="44" stroke="var(--c-ink-soft)" stroke-width="2.4" />
+              <line x1="11" y1="316" x2="21" y2="316" stroke="var(--c-ink-soft)" stroke-width="2.4" />
+              <text x="34" y="180" font-size="30" font-weight="900"
+                    fill="var(--c-accent)" dominant-baseline="middle">5m</text>
+              <!-- 投げる軌道の矢印（ボールから的まで まっすぐ・中心x=124で左右対称） -->
+              <path d="M91,272 L97,38" fill="none"
+                    stroke="var(--c-aim)" stroke-width="6" stroke-linecap="round"
+                    marker-end="url(#aimHead)" />
+              <path d="M157,272 L151,38" fill="none"
+                    stroke="var(--c-aim)" stroke-width="6" stroke-linecap="round"
+                    marker-end="url(#aimHead)" />
+              <!-- 投げる人（ボール2個＝2人同時・中心x=124） -->
+              <use href="#ball" x="66"  y="258" width="50" height="50" />
+              <use href="#ball" x="132" y="258" width="50" height="50" />
+              <!-- 投げるライン（中心x=124） -->
+              <rect x="50" y="320" width="148" height="9" rx="4.5" fill="var(--c-aim)" />
+              <text x="124" y="352" font-size="26" font-weight="900" text-anchor="middle"
+                    fill="var(--c-aim)">ライン</text>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. 得点ルール（ペットボトル） -->
+      <section class="slide s-score" aria-labelledby="t-score">
+        <h2 class="slide-title rise" id="t-score"><ruby>得点<rt>とくてん</rt></ruby>ルール</h2>
+        <p class="subhead rise">ダンボールの <ruby>的<rt>まと</rt></ruby>を たおして <ruby>得点<rt>とくてん</rt></ruby>！</p>
+        <div class="score-cards rise">
+          <div class="score-card hot">
+            <svg class="card-can" viewBox="0 0 76 100"><use href="#canRed" /></svg>
+            <p class="card-label"><ruby>赤<rt>あか</rt></ruby>い <ruby>的<rt>まと</rt></ruby></p>
+            <p class="card-pts">25<ruby>点<rt>てん</rt></ruby></p>
+            <p class="card-sub"><ruby>全部<rt>ぜんぶ</rt></ruby>で 4つ</p>
+          </div>
+          <div class="score-card">
+            <svg class="card-can" viewBox="0 0 76 100"><use href="#can" /></svg>
+            <p class="card-label"><ruby>茶色<rt>ちゃいろ</rt></ruby>の <ruby>的<rt>まと</rt></ruby></p>
+            <p class="card-pts zero">0<ruby>点<rt>てん</rt></ruby></p>
+            <p class="card-sub">&nbsp;</p>
+          </div>
+          <div class="score-card gold">
+            <span class="card-emoji">💥</span>
+            <p class="card-label">ぜんぶ たおす<br />（ストライク）</p>
+            <p class="card-pts">+50<ruby>点<rt>てん</rt></ruby></p>
+            <p class="card-sub">ボーナス</p>
+          </div>
+        </div>
+        <div class="shapes rise">
+          <span class="shape-label"><ruby>的<rt>まと</rt></ruby>の <ruby>置<rt>お</rt></ruby>き<ruby>方<rt>かた</rt></ruby>は いろいろ！</span>
+          <span class="all-bonus"><ruby>全部<rt>ぜんぶ</rt></ruby> たおすと <em>150<ruby>点<rt>てん</rt></ruby></em>！</span>
+        </div>
+      </section>
+
+      <!-- 6. 勝負の決め方 -->
+      <section class="slide s-win" aria-labelledby="t-win">
+        <h2 class="slide-title rise" id="t-win"><ruby>勝負<rt>しょうぶ</rt></ruby>の <ruby>決<rt>き</rt></ruby>め<ruby>方<rt>かた</rt></ruby></h2>
+        <div class="win-eq rise" aria-hidden="true">
+          <span class="eq-game"><span class="eq-label">1<ruby>投<rt>とう</rt></ruby><ruby>目<rt>め</rt></ruby></span></span>
+          <span class="eq-op">＋</span>
+          <span class="eq-game"><span class="eq-label">2<ruby>投<rt>とう</rt></ruby><ruby>目<rt>め</rt></ruby></span></span>
+          <span class="eq-op">＝</span>
+          <span class="eq-total"><span class="eq-label"><ruby>合計点<rt>ごうけいてん</rt></ruby></span></span>
+        </div>
+        <p class="lead rise">
+          <em>2<ruby>回<rt>かい</rt></ruby><ruby>投<rt>な</rt></ruby>げた <ruby>合計点<rt>ごうけいてん</rt></ruby></em>で<br />
+          トーナメントの <ruby>勝<rt>か</rt></ruby>ちを <ruby>決<rt>き</rt></ruby>めるよ！
+        </p>
+      </section>
+
+      <!-- 8. 締め -->
+      <section class="slide s-end" aria-label="おわり">
+        <div class="end-burst" aria-hidden="true">
+          <span class="burst b1"></span>
+          <span class="burst b3"></span>
+        </div>
+        <p class="end-lead rise">ご<ruby>参加<rt>さんか</rt></ruby><br />ありがとうございました！</p>
+        <p class="end-sub rise">
+          <ruby>抽選<rt>ちゅうせん</rt></ruby><ruby>開始<rt>かいし</rt></ruby>まで、<br />しばらく お<ruby>待<rt>ま</rt></ruby>ちください
+        </p>
+        <svg class="end-trophy rise" viewBox="0 0 100 110" aria-hidden="true"><use href="#trophy" /></svg>
+      </section>
+
+      <!-- ナビ -->
+      <button class="nav-arrow prev" type="button" aria-label="前へ">‹</button>
+      <button class="nav-arrow next" type="button" aria-label="次へ">›</button>
+      <nav class="progress" aria-label="スライド一覧"></nav>
+      <span class="hint">← → でめくる ／ F で全画面</span>
+    </div>
+  </main>
+
+  <script src="scripts/deck.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+/* ふわふわストライク — デザイントークン
+   ボンバーストライカー風（緑×黄×紫）＋夏祭りの賑やかさ
+   子ども向け・遠目でも見やすい大きな文字 */
+
+:root {
+  /* ---- 配色（ボンバー風）---- */
+  --c-lime: oklch(86% 0.18 132);          /* 背景のライムグリーン */
+  --c-lime-deep: oklch(72% 0.2 138);      /* 背景の濃い緑 */
+  --c-lime-soft: oklch(93% 0.11 130);     /* 星パターンの淡い緑 */
+
+  --c-logo-top: oklch(95% 0.16 110);      /* ロゴ立体面 上（明るい黄） */
+  --c-logo-bottom: oklch(78% 0.2 130);    /* ロゴ立体面 下（黄緑） */
+  --c-logo-edge: oklch(45% 0.2 300);      /* ロゴ縁取り（紫） */
+  --c-logo-edge-deep: oklch(32% 0.18 300);/* ロゴ厚み（濃紫） */
+
+  --c-burst-1: oklch(72% 0.21 50);        /* 爆発 オレンジ */
+  --c-burst-2: oklch(64% 0.24 30);        /* 爆発 レッド */
+  --c-burst-3: oklch(92% 0.17 95);        /* 爆発 イエロー芯 */
+
+  --c-aim: oklch(62% 0.17 250);           /* ねらいの矢印（ボールと同系の青） */
+  --c-ball: oklch(58% 0.18 250);          /* 100均ボールの青 */
+  --c-ball-hi: oklch(82% 0.11 240);       /* ボールのハイライト */
+  --c-ball-shadow: oklch(42% 0.16 255);   /* ボールの陰 */
+
+  /* ---- 的（ダンボールの缶）---- */
+  --c-can: oklch(72% 0.09 68);            /* 通常の的 ダンボール色（茶） */
+  --c-can-top: oklch(80% 0.07 72);        /* 缶のフタ面（明るい茶） */
+  --c-can-line: oklch(46% 0.08 58);       /* 缶の輪郭・段ボールの筋 */
+  --c-can-shadow: oklch(56% 0.08 62);     /* 缶の側面の陰 */
+  --c-can-red: oklch(60% 0.23 28);        /* 赤い的（得点） */
+  --c-can-red-top: oklch(70% 0.2 30);     /* 赤い的のフタ面 */
+  --c-can-red-line: oklch(46% 0.21 28);   /* 赤い的の輪郭 */
+
+  /* 赤の強調（カードの縁・パターン等に流用） */
+  --c-pin-red: oklch(60% 0.23 28);
+
+  /* ---- 文字・UIの色 ---- */
+  --c-ink: oklch(28% 0.05 280);           /* 本文の濃い色（やや紫みの黒） */
+  --c-ink-soft: oklch(45% 0.04 280);
+  --c-accent: oklch(52% 0.2 300);         /* 見出しアクセント（紫） */
+  --c-hot: oklch(58% 0.24 28);            /* 強調の赤 */
+  --c-card: oklch(99% 0.01 120);          /* カード面 白 */
+  --c-card-edge: oklch(82% 0.08 132);     /* カードの縁 */
+
+  --c-ruby: oklch(50% 0.12 250);          /* ふりがなの色 */
+
+  /* ---- タイポグラフィ ---- */
+  --font-base: "Hiragino Maru Gothic ProN", "ヒラギノ丸ゴ ProN",
+    "Yu Gothic UI", "YuGothic", "BIZ UDPGothic", "Meiryo",
+    system-ui, sans-serif;
+
+  /* ステージ(常に16:9)基準で算出。1cqw = ステージ幅の1%。
+     基準1600px幅で 1cqw = 16px = 1rem になるよう設計しているため、
+     旧 clamp の最大値(rem)の数値をそのまま cqw に置き換えている。
+     これでウィンドウ／全画面の大小に関わらず、文字と余白の比率が常に一定になる。 */
+  --text-hero: 9cqw;     /* ロゴ */
+  --text-title: 5cqw;    /* スライド見出し */
+  --text-lead: 3.4cqw;   /* 大きめ本文 */
+  --text-body: 2.2cqw;   /* 本文 */
+  --text-note: 1.4cqw;   /* 注釈 */
+  --text-ruby: 0.46em;   /* ふりがな比率（親フォント基準なので自動で追従） */
+
+  /* ---- 余白・形（ステージ基準で比率固定）---- */
+  --pad-slide: 5cqw;
+  --gap: 2.4cqw;
+  --radius: 1.8cqw;
+  --radius-pill: 999px;
+
+  /* ---- モーション ---- */
+  --dur-fast: 180ms;
+  --dur-normal: 420ms;
+  --dur-slow: 800ms;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ---- 影 ---- */
+  --shadow-card: 0 0.6rem 1.6rem oklch(40% 0.1 300 / 0.18);
+  --shadow-pop: 0 1rem 2.4rem oklch(40% 0.12 300 / 0.28);
+}

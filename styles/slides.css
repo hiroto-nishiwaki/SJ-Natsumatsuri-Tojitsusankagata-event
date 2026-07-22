@@ -1,0 +1,477 @@
+/* 各スライドの見た目
+   タイトル＝ボンバー風ライム、内容＝明るく読みやすい背景＋ポップな配色 */
+
+/* ===== 内容スライド共通の背景 ===== */
+.slide:not(:first-child) {
+  background:
+    radial-gradient(120% 90% at 100% 0%, oklch(93% 0.1 130 / 0.7), transparent 55%),
+    radial-gradient(120% 90% at 0% 100%, oklch(92% 0.08 250 / 0.55), transparent 55%),
+    linear-gradient(160deg, oklch(99% 0.01 120), oklch(96% 0.03 130));
+}
+/* 右上の斜めリボン（去年の雰囲気を踏襲） */
+.slide:not(:first-child)::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 38%;
+  height: 140%;
+  background: linear-gradient(120deg, transparent 40%, oklch(86% 0.15 132 / 0.35) 41%, oklch(80% 0.18 138 / 0.3) 60%, transparent 61%);
+  transform: rotate(8deg);
+  pointer-events: none;
+  z-index: 0;
+}
+.slide:not(:first-child) > * { position: relative; z-index: 1; }
+
+/* ===== 見出し ===== */
+.slide-title {
+  margin: 0 0 0.4em;
+  font-size: var(--text-title);
+  font-weight: 900;
+  color: var(--c-accent);
+  letter-spacing: 0.01em;
+  text-shadow: 0 0.06em 0 oklch(96% 0.12 130);
+}
+.slide-title::before {
+  content: "";
+  display: inline-block;
+  width: 0.42em;
+  height: 0.42em;
+  margin-right: 0.32em;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--c-ball-hi), var(--c-ball));
+  vertical-align: 0.04em;
+}
+.subhead {
+  margin: -0.4em 0 0.5em;
+  font-size: var(--text-body);
+  font-weight: 800;
+  color: var(--c-ink-soft);
+}
+
+/* ===== 本文・強調 ===== */
+.lead {
+  margin: 0.2em 0;
+  font-size: var(--text-lead);
+  font-weight: 800;
+  line-height: 1.4;
+  color: var(--c-ink);
+}
+.note {
+  margin: 0.6em 0 0;
+  font-size: var(--text-body);
+  font-weight: 700;
+  color: var(--c-ink-soft);
+}
+em {
+  font-style: normal;
+  color: var(--c-hot);
+  background: linear-gradient(transparent 62%, oklch(92% 0.16 95 / 0.85) 62%);
+  padding: 0 0.08em;
+}
+
+/* ===== 1. タイトルのボール＆ピン配置 ===== */
+.title-ball {
+  position: absolute;
+  z-index: 2;
+  width: 16%;
+  left: 5%;
+  bottom: 10%;
+  filter: drop-shadow(0 0.6rem 0.8rem oklch(30% 0.1 280 / 0.4));
+  animation: bob 3s ease-in-out infinite;
+}
+.title-pin {
+  position: absolute;
+  z-index: 2;
+  width: 6.5%;
+  filter: drop-shadow(0 0.4rem 0.5rem oklch(30% 0.1 280 / 0.4));
+}
+.title-pin.p-a { right: 9%; bottom: 12%; transform: rotate(14deg); }
+.title-pin.p-b { right: 4%; bottom: 20%; transform: rotate(-12deg); }
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8%); }
+}
+
+/* ===== 2. どんなゲーム？ ===== */
+.game-scene {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2cqw;
+  margin: var(--gap) 0;
+}
+.scene-ball { width: 9cqw; animation: bob 3s ease-in-out infinite; }
+.scene-arrow {
+  font-size: 4cqw;
+  color: var(--c-hot);
+  animation: nudge 1.4s ease-in-out infinite;
+}
+@keyframes nudge { 0%,100%{transform:translateX(0)} 50%{transform:translateX(0.3em)} }
+.scene-table {
+  position: relative;
+  padding: 0 2.4cqw 0.6cqw;
+  border-bottom: 0.7cqw solid oklch(58% 0.1 60);
+  border-radius: 0 0 0.4rem 0.4rem;
+}
+.scene-table::before {
+  content: "";
+  position: absolute;
+  left: 8%; right: 8%; bottom: -1.4cqw;
+  height: 1.4cqw;
+  background: oklch(48% 0.09 55);
+}
+/* 缶3つをピラミッド積み（下段2つ＋上段1つ・SVG内で密着配置） */
+.scene-cans { width: 12cqw; height: auto; display: block; }
+
+/* ===== 3. トーナメント ===== */
+.tourney-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 2.4cqw;
+}
+.tourney-format {
+  list-style: none;
+  margin: 0; padding: 0;
+  font-size: var(--text-lead);
+  font-weight: 900;
+  color: var(--c-ink);
+  line-height: 1.7;
+}
+
+/* ===== トーナメント表 =====
+   ABC / DEF / GHI の3グループ → 各1チームが勝ち上がり → 決勝
+   コネクタは「コの字（3つ→1つ）」を背景グラデの多重描画で表現 */
+.bracket {
+  --line: var(--c-lime-deep);
+  --line-w: 4px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.bracket-trophy { width: 5.2cqw; margin-bottom: 0.25rem; }
+
+.final-box {
+  padding: 0.28em 1.5em;
+  border: 3px solid var(--c-accent);
+  border-radius: 0.7rem;
+  background: var(--c-accent);
+  color: var(--c-card);
+  font-size: var(--text-lead);
+  font-weight: 900;
+}
+/* 紫地のふりがなは明るいクリーム色で読みやすく */
+.final-box rt { color: oklch(96% 0.12 100); }
+
+.groups {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+}
+.group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 0.6cqw;
+}
+.winner {
+  padding: 0.16em 0.9em;
+  border: 3px solid var(--c-accent);
+  border-radius: 0.55rem;
+  background: var(--c-card);
+  color: var(--c-accent);
+  font-size: var(--text-body);
+  font-weight: 900;
+  white-space: nowrap;
+}
+.teams {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  width: 100%;
+}
+.team {
+  display: grid;
+  place-items: center;
+  width: 4cqw;
+  aspect-ratio: 4 / 5;
+  border: 3px solid var(--c-lime-deep);
+  border-radius: 0.6rem;
+  background: var(--c-card);
+  font-size: 2.6cqw;
+  font-weight: 900;
+  color: var(--c-ink);
+}
+
+/* コの字コネクタ：横棒＋中央の上riser＋3本の下drop（5本の線を背景で描画） */
+.connector {
+  width: 100%;
+  height: 2.6cqw;
+  background-repeat: no-repeat;
+  background-image:
+    linear-gradient(var(--line), var(--line)),
+    linear-gradient(var(--line), var(--line)),
+    linear-gradient(var(--line), var(--line)),
+    linear-gradient(var(--line), var(--line)),
+    linear-gradient(var(--line), var(--line));
+  background-size:
+    66.67% var(--line-w),
+    var(--line-w) 50%,
+    var(--line-w) 50%,
+    var(--line-w) 50%,
+    var(--line-w) 50%;
+  background-position:
+    50% 50%,
+    50% 0%,
+    16.67% 100%,
+    50% 100%,
+    83.33% 100%;
+}
+
+/* ===== 4. 投げ方・立ち位置 =====
+   レーンは縦向きで右側に配置。上＝的（缶）、下＝投げる位置（ボール）。5mのライン入り */
+.throw-layout {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  gap: 4cqw;
+  margin: var(--gap) 0;
+}
+.throw-points { align-self: center; }
+
+/* ねらいの図：的（缶）→ 矢印 → ボール2個 ＋ 投げライン・5mめもり
+   図を下端ぞろえにして、的だけ上へ伸ばす（ボール・ラインの位置は据え置き） */
+.throw-scene { display: grid; place-items: end center; align-self: end; }
+.aim {
+  width: 13.5cqw;
+  height: auto;
+  display: block;
+}
+
+.throw-points {
+  list-style: none;
+  margin: 0; padding: 0;
+  font-size: 3cqw;
+  font-weight: 800;
+  line-height: 1.8;
+  color: var(--c-ink);
+  /* スペースで区切った意味のまとまり単位でのみ折り返す（語の途中で切れない） */
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+.throw-points li::before { content: "▶ "; color: var(--c-lime-deep); }
+
+/* ===== 5. 得点ルール ===== */
+.score-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap);
+  margin: 0.4em 0;
+}
+.score-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 1.4cqw;
+  border-radius: var(--radius);
+  background: var(--c-card);
+  border: 3px solid var(--c-card-edge);
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+.score-card.hot { border-color: var(--c-pin-red); }
+.score-card.gold { border-color: oklch(78% 0.15 85); background: linear-gradient(180deg, oklch(98% 0.06 95), var(--c-card)); }
+.card-can { width: 3.8cqw; height: auto; }
+.card-emoji { font-size: 4cqw; line-height: 1; }
+.card-label { margin: 0.1em 0; font-size: var(--text-note); font-weight: 800; color: var(--c-ink-soft); }
+.card-pts { margin: 0; font-size: 3.4cqw; font-weight: 900; color: var(--c-hot); }
+.card-pts.zero { color: var(--c-ink-soft); }
+.score-card.gold .card-pts { color: oklch(60% 0.16 70); }
+.card-sub { margin: 0; font-size: var(--text-note); font-weight: 700; color: var(--c-ink-soft); }
+
+.shapes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.4cqw;
+  margin-top: var(--gap);
+  font-size: var(--text-body);
+  font-weight: 800;
+}
+.shape-label { color: var(--c-accent); }
+/* 「全部たおすと150点！」のチカ目立ちバッジ（ラベルのすぐ右に差し込み） */
+.all-bonus {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25em;
+  padding: 0.3em 1em;
+  border-radius: var(--radius-pill);
+  background: var(--c-hot);
+  color: var(--c-card);
+  font-weight: 900;
+  white-space: nowrap;
+  box-shadow: var(--shadow-pop);
+}
+.all-bonus em {
+  font-size: 1.4em;
+  color: oklch(96% 0.14 100);
+  background: none;
+  padding: 0;
+}
+.all-bonus rt { color: oklch(95% 0.12 100); }
+
+/* ===== 6. 勝負の決め方 ===== */
+.win-eq {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.6cqw;
+  margin: var(--gap) 0;
+}
+.eq-game, .eq-total {
+  display: grid;
+  place-items: center;
+  padding: 1.4cqw 2cqw;
+  border-radius: var(--radius);
+  font-size: var(--text-lead);
+  font-weight: 900;
+  line-height: 1.1;
+  box-shadow: var(--shadow-card);
+}
+.eq-game { background: var(--c-card); border: 3px solid var(--c-lime-deep); color: var(--c-ink); }
+.eq-game small, .eq-total small { font-size: 0.42em; font-weight: 700; color: var(--c-ink-soft); }
+.eq-label { white-space: nowrap; }
+.eq-total { background: var(--c-accent); color: var(--c-card); }
+/* 紫地の上のふりがなは青だと埋もれるので、明るいクリーム色で読みやすく */
+.eq-total rt { color: oklch(96% 0.12 100); }
+.eq-op { font-size: var(--text-title); font-weight: 900; color: var(--c-ink-soft); }
+
+/* ===== 8. 締め ===== */
+.s-end {
+  align-items: center;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 40%, oklch(92% 0.12 128), var(--c-lime)) !important;
+}
+.s-end::after { display: none; }
+.end-burst .burst { z-index: 0; }
+.end-burst .b1 { width: 36%; height: 36%; top: 8%; left: 6%; background: radial-gradient(circle, var(--c-burst-3), var(--c-burst-1) 55%, var(--c-burst-2)); animation: throb 2.6s ease-in-out infinite; }
+.end-burst .b3 { width: 30%; height: 30%; bottom: 8%; right: 8%; background: radial-gradient(circle, var(--c-burst-3), var(--c-burst-1) 55%, var(--c-burst-2)); animation: throb 2.6s ease-in-out infinite 1s; }
+.end-lead {
+  font-size: var(--text-title);
+  font-weight: 900;
+  color: var(--c-accent);
+  margin: 0 0 0.3em;
+  text-shadow: 0 0.06em 0 var(--c-card);
+}
+.end-sub {
+  font-size: var(--text-lead);
+  font-weight: 800;
+  color: var(--c-ink);
+  margin: 0;
+}
+.end-trophy { width: 9cqw; margin-top: var(--gap); animation: bob 3s ease-in-out infinite; }
+
+/* ===== 得点表スライド（予選1〜3・決勝） ===== */
+.s-board {
+  padding: 3cqw 4cqw;
+  justify-content: center;
+  gap: 1.4cqw;
+}
+.s-board .slide-title {
+  text-align: center;
+  margin: 0;
+}
+
+.board-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  box-shadow: 0 1cqw 2.4cqw oklch(40% 0.1 300 / 0.18);
+  border-radius: 1.4cqw;
+  overflow: hidden;
+}
+.bt-c-team  { width: 32%; }
+.bt-c-throw { width: 21%; }
+.bt-c-total { width: 26%; }
+
+.board-table th {
+  font-size: 2.9cqw;
+  font-weight: 900;
+  color: var(--c-card);
+  background: var(--c-lime-deep);
+  padding: 0.55em 0;
+  border: 0.35cqw solid var(--c-card);
+}
+
+.board-table td {
+  height: 16.5cqh;
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
+  background: var(--c-card);
+  border: 0.35cqw solid oklch(88% 0.03 280);
+}
+.board-table tbody tr:nth-child(even) td { background: oklch(97% 0.02 130); }
+
+/* チーム名（予選は固定文字） */
+.bt-team {
+  font-size: 5.6cqw;
+  font-weight: 900;
+  color: var(--c-accent);
+}
+
+/* 入力欄共通 */
+.bt-in,
+.bt-team-in {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  text-align: center;
+  color: var(--c-ink);
+  outline: none;
+}
+.bt-in:focus,
+.bt-team-in:focus { background: var(--c-burst-3); }
+
+.bt-in {
+  font-size: 6.4cqw;
+  font-weight: 900;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.bt-in::-webkit-outer-spin-button,
+.bt-in::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* 決勝のチーム名（空欄・記入用） */
+.bt-team-in {
+  font-size: 4.6cqw;
+  font-weight: 900;
+  color: var(--c-accent);
+}
+
+/* 合計点セル（ゴールド） */
+.bt-total {
+  background: linear-gradient(180deg, var(--c-burst-3) 0%, oklch(80% 0.16 82) 100%) !important;
+}
+.bt-total span {
+  display: inline-block;
+  font-size: 7cqw;
+  font-weight: 900;
+  color: var(--c-ink);
+  line-height: 1;
+  transition: color var(--dur-fast), transform var(--dur-fast) var(--ease-back);
+}
+/* 各ゲームで最高得点のチームだけ赤く強調（同点なら複数） */
+.bt-total span.is-top {
+  color: var(--c-hot);
+  transform: scale(1.12);
+  text-shadow: 0 0.12cqw 0 oklch(100% 0 0 / 0.6);
+}
