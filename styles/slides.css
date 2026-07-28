@@ -363,19 +363,101 @@ em {
 .end-burst .b1 { width: 36%; height: 36%; top: 8%; left: 6%; background: radial-gradient(circle, var(--c-burst-3), var(--c-burst-1) 55%, var(--c-burst-2)); animation: throb 2.6s ease-in-out infinite; }
 .end-burst .b3 { width: 30%; height: 30%; bottom: 8%; right: 8%; background: radial-gradient(circle, var(--c-burst-3), var(--c-burst-1) 55%, var(--c-burst-2)); animation: throb 2.6s ease-in-out infinite 1s; }
 .end-lead {
-  font-size: var(--text-title);
+  font-size: 4.2cqw;
   font-weight: 900;
   color: var(--c-accent);
-  margin: 0 0 0.3em;
+  margin: 0 0 0.2em;
   text-shadow: 0 0.06em 0 var(--c-card);
 }
 .end-sub {
-  font-size: var(--text-lead);
+  font-size: var(--text-body);
   font-weight: 800;
   color: var(--c-ink);
   margin: 0;
+  line-height: 1.5;
 }
-.end-trophy { width: 9cqw; margin-top: var(--gap); animation: bob 3s ease-in-out infinite; }
+.end-sub em {
+  font-size: 1.15em;
+}
+
+/* ===== 集合場所マップ ===== */
+.venue-map {
+  position: relative;
+  z-index: 1;
+  width: min(58cqw, 760px);
+  margin: 1.6cqh auto 0;
+  padding: 1.4cqw 1.8cqw;
+  background: var(--c-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  display: grid;
+  grid-template-rows: 8cqh 4.5cqh 16.5cqh 10cqh;
+  gap: 0.9cqh;
+}
+.venue-screen,
+.venue-wall,
+.venue-seats {
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  border-radius: 0.5cqw;
+}
+.venue-screen {
+  background: var(--c-accent);
+  color: var(--c-card);
+  font-size: var(--text-note);
+}
+.venue-walls-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 4cqw;
+}
+.venue-wall {
+  flex: 1;
+  background: oklch(62% 0.02 270);
+  color: var(--c-card);
+  font-size: var(--text-note);
+}
+.venue-wall.is-meet {
+  outline: 0.3cqw solid var(--c-hot);
+  outline-offset: 0.15cqw;
+}
+.venue-wall rt { color: oklch(96% 0.02 270); }
+.venue-floor {
+  position: relative;
+}
+.venue-marker {
+  position: absolute;
+  top: 0.4cqh;
+  left: -2%;
+  display: flex;
+  align-items: center;
+  gap: 0.3cqw;
+}
+.venue-star {
+  font-size: 3.4cqh;
+  color: oklch(80% 0.16 90);
+  filter: drop-shadow(0 0.08cqh 0 oklch(45% 0.12 60 / 0.4));
+  line-height: 1;
+}
+.venue-arrow {
+  font-size: 2.6cqh;
+  font-weight: 900;
+  color: var(--c-hot);
+  line-height: 1;
+}
+.venue-callout {
+  font-size: var(--text-note);
+  font-weight: 900;
+  color: var(--c-hot);
+  white-space: nowrap;
+}
+.venue-seats {
+  border: 0.25cqw solid var(--c-card-edge);
+  color: var(--c-ink-soft);
+  font-size: var(--text-note);
+  background: oklch(97% 0.02 130);
+}
 
 /* ===== 得点表スライド（予選1〜3・決勝） ===== */
 .s-board {
